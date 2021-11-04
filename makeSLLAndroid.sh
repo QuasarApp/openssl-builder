@@ -16,7 +16,13 @@ BASE_PATH=$PATH
 
 cd $BASE_DIR
 
-git clone https://github.com/openssl/openssl.git
+if [ -d "$BASE_DIR/openssl" ]; then
+
+  echo "opens ssl alredy cloned"
+else
+    git clone https://github.com/openssl/openssl.git
+fi
+
 
 rm -rdf $BASE_DIR/aarch64Build
 rm -rdf $BASE_DIR/arm86Build
