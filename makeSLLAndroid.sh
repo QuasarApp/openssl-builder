@@ -5,11 +5,11 @@ OPENSSL_TAG=OpenSSL_1_1_1l
 
 
 
-export ANDROID_NDK_ROOT="$HOME/AndroidSDK/ndk/23.1.7779620"
+export ANDROID_NDK_ROOT="$HOME/AndroidSDK/ndk/21.4.7075529"
 export ANDROID_SDK_ROOT="$HOME/AndroidSDK"
 export JAVA_HOME="/usr"
 export ANDROID_HOME="$HOME/AndroidSDK"
-export ANDROID_API_VERSION="31"
+export ANDROID_API_VERSION="27"
 export ANDROID_NDK_HOME=$ANDROID_NDK_ROOT
 
 
@@ -25,7 +25,7 @@ else
     git clone https://github.com/openssl/openssl.git
 fi
 
-
+rm -rdf $BASE_DIR/amd64Build
 rm -rdf $BASE_DIR/aarch64Build
 rm -rdf $BASE_DIR/arm86Build
 
@@ -38,23 +38,37 @@ git checkout $OPENSSL_TAG
 git submodule update --init --recursive
 
 export PATH=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin:$BASE_PATH
+
+GENERAL_OPTIONS=no-stdio no-tests no-ui-console no-ssl2 no-ssl3 no-comp no-hw no-engine
+
+# Arm 64 build
 export SSL_PREFIX_DIR=$BASE_DIR/aarch64Build
 
-./Configure android-arm64 no-stdio no-tests no-ui-console -D__ANDROID_API__=$ANDROID_API_VERSION --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
+./Configure android-arm64 $GENERAL_OPTIONS -D__ANDROID_API__=$ANDROID_API_VERSION --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
 make -j${nproc} SHLIB_VERSION_NUMBER= SHLIB_EXT=.so
 make install_sw SHLIB_VERSION_NUMBER= SHLIB_EXT=.so
 
 git clean -xdf
 git submodule foreach --recursive git clean -xdf
 
-export PATH=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin:$BASE_PATH
 
+# Arm 32 build
 export SSL_PREFIX_DIR=$BASE_DIR/arm86Build
 
-./Configure android-arm no-stdio no-tests no-ui-console -D__ANDROID_API__=$ANDROID_API_VERSION --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
+./Configure android-arm $GENERAL_OPTIONS -D__ANDROID_API__=$ANDROID_API_VERSION --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
 make -j${nproc} SHLIB_VERSION_NUMBER= SHLIB_EXT=.so
 make install_sw SHLIB_VERSION_NUMBER= SHLIB_EXT=.so
 
 git clean -xdf
 git submodule foreach --recursive git clean -xdf
 
+
+# Amd 64 build
+export SSL_PREFIX_DIR=$BASE_DIR/amd64Build
+
+./Configure android-x86_64 $GENERAL_OPTIONS -D__ANDROID_API__=$ANDROID_API_VERSION --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
+make -j${nproc} SHLIB_VERSION_NUMBER= SHLIB_EXT=.so
+make install_sw SHLIB_VERSION_NUMBER= SHLIB_EXT=.so
+
+git clean -xdf
+git submodule foreach --recursive git clean -xdf
