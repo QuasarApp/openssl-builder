@@ -46,7 +46,7 @@ function build_for ()
   CROSS_TOP_ENV=CROSS_TOP_$3
   CROSS_SDK_ENV=CROSS_SDK_$3
   
-  echo "#####BUILD FOR PLATFORM#####"
+  echo "#####BUILD FOR $PLATFORM#####"
 
   export CROSS_TOP="${!CROSS_TOP_ENV}"
   export CROSS_SDK="${!CROSS_SDK_ENV}"

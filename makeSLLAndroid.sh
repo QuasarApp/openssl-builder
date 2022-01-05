@@ -41,7 +41,7 @@ GENERAL_OPTIONS="-no-stdio -no-tests -no-ui-console -no-ssl2 -no-ssl3 -no-comp -
 function build_for ()
 {
   PLATFORM=$1
-  echo "#####BUILD FOR PLATFORM#####"
+  echo "#####BUILD FOR $PLATFORM#####"
 
   export SSL_PREFIX_DIR=$BASE_DIR/$PLATFORM
 
