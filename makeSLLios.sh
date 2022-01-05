@@ -41,7 +41,7 @@ git submodule foreach --recursive git clean -xdf
 git checkout $OPENSSL_TAG
 git submodule update --init --recursive
 
-GENERAL_OPTIONS="-fembed-bitcode -no-stdio -no-tests -no-ui-console -no-ssl2 -no-ssl3 -no-comp -no-hw -no-engine"
+GENERAL_OPTIONS="-fembed-bitcode -no-shared -no-stdio -no-tests -no-ui-console -no-ssl2 -no-ssl3 -no-comp -no-hw -no-engine"
 
 function build_for ()
 {
