@@ -12,6 +12,7 @@ CROSS_SDK_SIM="iPhoneSimulator.sdk"
 
 CROSS_TOP_IOS="`xcode-select --print-path`/Platforms/iPhoneOS.platform/Developer"
 CROSS_SDK_IOS="iPhoneOS.sdk"
+export PATH="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:$PATH"
 
 export CROSS_COMPILE=`xcode-select --print-path`/Toolchains/XcodeDefault.xctoolchain/usr/bin/
 
@@ -56,7 +57,6 @@ function build_for ()
   export CROSS_TOP="${!CROSS_TOP_ENV}"
   export CROSS_SDK="${!CROSS_SDK_ENV}"
   export SSL_PREFIX_DIR=$BASE_DIR/$PLATFORM
-
   git clean -xdf
   git submodule foreach --recursive git clean -xdf
   rm -rdf $SSL_PREFIX_DIR
