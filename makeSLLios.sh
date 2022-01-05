@@ -56,7 +56,10 @@ function build_for ()
   git submodule foreach --recursive git clean -xdf
   rm -rdf $SSL_PREFIX_DIR
 
+  echo "./Configure $GENERAL_OPTIONS $PLATFORM -arch $ARCH --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}"
   ./Configure $GENERAL_OPTIONS $PLATFORM -arch $ARCH --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
+  
+  echo "make -j${nproc} SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX"
   make -j${nproc} SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX
   make install_sw SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX
 
