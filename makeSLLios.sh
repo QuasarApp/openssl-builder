@@ -50,12 +50,13 @@ function build_for ()
 
   export CROSS_TOP="${!CROSS_TOP_ENV}"
   export CROSS_SDK="${!CROSS_SDK_ENV}"
+  export SSL_PREFIX_DIR=$BASE_DIR/$PLATFORM
 
   git clean -xdf
   git submodule foreach --recursive git clean -xdf
   rm -rdf $SSL_PREFIX_DIR
 
-  ./Configure $GENERAL_OPTIONS $PLATFORM "-arch $ARCH" --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
+  ./Configure $GENERAL_OPTIONS $PLATFORM -arch $ARCH --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
   make -j${nproc} SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX
   make install_sw SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX
 
