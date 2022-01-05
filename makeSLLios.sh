@@ -15,7 +15,12 @@ CROSS_SDK_IOS="iPhoneOS.sdk"
 
 export CROSS_COMPILE=`xcode-select --print-path`/Toolchains/XcodeDefault.xctoolchain/usr/bin/
 
-BASE_DIR=$(dirname "$(readlink -f "$0")")
+realpath() {
+    path=`eval echo "$1"`
+    folder=$(dirname "$path")
+    echo $(cd "$folder"; pwd)/$(basename "$path"); 
+}
+BASE_DIR=$(dirname "$(realpath "$0")")
 BASE_PATH=$PATH
 
 cd $BASE_DIR
