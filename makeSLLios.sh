@@ -71,9 +71,6 @@ function build_for ()
   unset SSL_PREFIX_DIR
 }
 
-# Amd 64 build
-build_for os64sim-cross x86_64 SIM
-
 # Arm 32 build
 build_for ios-cross armv7s IOS
 
