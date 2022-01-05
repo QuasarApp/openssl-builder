@@ -41,16 +41,13 @@ git submodule foreach --recursive git clean -xdf
 git checkout $OPENSSL_TAG
 git submodule update --init --recursive
 
-export PATH=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin:$BASE_PATH
-
-GENERAL_OPTIONS="-no-stdio -no-tests -no-ui-console -no-ssl2 -no-ssl3 -no-comp -no-hw -no-engine"
+GENERAL_OPTIONS="-fembed-bitcode -no-stdio -no-tests -no-ui-console -no-ssl2 -no-ssl3 -no-comp -no-hw -no-engine"
 
 function build_for ()
 {
   PLATFORM=$1
-  ARCH=$2
-  CROSS_TOP_ENV=CROSS_TOP_$3
-  CROSS_SDK_ENV=CROSS_SDK_$3
+  CROSS_TOP_ENV=CROSS_TOP_$2
+  CROSS_SDK_ENV=CROSS_SDK_$2
   
   echo "#####BUILD FOR $PLATFORM#####"
 
@@ -61,19 +58,19 @@ function build_for ()
   git submodule foreach --recursive git clean -xdf
   rm -rdf $SSL_PREFIX_DIR
 
-  echo "./Configure $GENERAL_OPTIONS $PLATFORM -arch $ARCH --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}"
-  ./Configure $GENERAL_OPTIONS $PLATFORM -arch $ARCH --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
+  echo "./Configure $GENERAL_OPTIONS $PLATFORM --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}"
+  ./Configure $GENERAL_OPTIONS $PLATFORM --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
   
-  echo "make -j${nproc} SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX"
-  make -j${nproc} SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX
+  echo "make SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX"
+  make SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX
   make install_sw SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX
 
   unset SSL_PREFIX_DIR
 }
 
 # Arm 32 build
-build_for ios-cross armv7s IOS
+build_for ios-cross IOS
 
 # Arm 64 build
-build_for ios64-cross arm64 IOS
+build_for ios64-cross IOS
 
