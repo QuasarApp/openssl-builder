@@ -3,3 +3,9 @@ aarch64Build/
 arm86Build/
 amd64Build/
 amd86Build/
+
+android-arm/
+android-arm64/
+android-x86/
+android-x86_64/
+

@@ -6,13 +6,14 @@ OPENSSL_LIB_PREFIX=_1_1.so
 
 
 
-export ANDROID_NDK_ROOT="$HOME/AndroidSDK/ndk/21.4.7075529"
-export ANDROID_SDK_ROOT="$HOME/AndroidSDK"
-export JAVA_HOME="/usr"
-export ANDROID_HOME="$HOME/AndroidSDK"
-export ANDROID_API_VERSION="27"
-export ANDROID_NDK_HOME=$ANDROID_NDK_ROOT
+TMP_DIR=../build_openssl
+CROSS_TOP_SIM="`xcode-select --print-path`/Platforms/iPhoneSimulator.platform/Developer"
+CROSS_SDK_SIM="iPhoneSimulator.sdk"
 
+CROSS_TOP_IOS="`xcode-select --print-path`/Platforms/iPhoneOS.platform/Developer"
+CROSS_SDK_IOS="iPhoneOS.sdk"
+
+export CROSS_COMPILE=`xcode-select --print-path`/Toolchains/XcodeDefault.xctoolchain/usr/bin/
 
 BASE_DIR=$(dirname "$(readlink -f "$0")")
 BASE_PATH=$PATH
@@ -41,29 +42,32 @@ GENERAL_OPTIONS="-no-stdio -no-tests -no-ui-console -no-ssl2 -no-ssl3 -no-comp -
 function build_for ()
 {
   PLATFORM=$1
+  ARCH=$2
+  CROSS_TOP_ENV=CROSS_TOP_$3
+  CROSS_SDK_ENV=CROSS_SDK_$3
+  
   echo "#####BUILD FOR PLATFORM#####"
 
-  export SSL_PREFIX_DIR=$BASE_DIR/$PLATFORM
+  export CROSS_TOP="${!CROSS_TOP_ENV}"
+  export CROSS_SDK="${!CROSS_SDK_ENV}"
 
   git clean -xdf
   git submodule foreach --recursive git clean -xdf
   rm -rdf $SSL_PREFIX_DIR
 
-  ./Configure $GENERAL_OPTIONS $PLATFORM -D__ANDROID_API__=$ANDROID_API_VERSION --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
+  ./Configure $GENERAL_OPTIONS $PLATFORM "-arch $ARCH" --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
   make -j${nproc} SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX
   make install_sw SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX
 
   unset SSL_PREFIX_DIR
 }
 
-# Arm 64 build
-build_for android-arm64
+# Amd 64 build
+build_for os64sim-cross x86_64 SIM
 
 # Arm 32 build
-build_for android-arm
+build_for ios-cross armv7s IOS
 
-# Amd 64 build
-build_for android-x86_64
+# Arm 64 build
+build_for ios64-cross arm64 IOS
 
-# Amd 64 build
-build_for android-x86
