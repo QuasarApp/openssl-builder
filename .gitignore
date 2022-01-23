@@ -9,3 +9,7 @@ android-arm64/
 android-x86/
 android-x86_64/
 
+
+#cmake
+*.user
+

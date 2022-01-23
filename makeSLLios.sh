@@ -74,3 +74,5 @@ build_for ios-cross IOS
 # Arm 64 build
 build_for ios64-cross IOS
 
+# Amd 64 build
+build_for ios64sim-cross IOS
