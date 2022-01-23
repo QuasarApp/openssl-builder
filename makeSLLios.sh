@@ -74,5 +74,7 @@ build_for ios-cross IOS
 # Arm 64 build
 build_for ios64-cross IOS
 
+# create configuration fpor build for simulators
+patch Configurations/10-main.conf < ../patch-conf.patch
 # Amd 64 build
 build_for ios64sim-cross SIM
