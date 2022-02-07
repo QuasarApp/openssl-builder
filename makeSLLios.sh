@@ -46,8 +46,9 @@ GENERAL_OPTIONS="-fembed-bitcode -no-shared -no-stdio -no-tests -no-ui-console -
 function build_for ()
 {
   PLATFORM=$1
-  CROSS_TOP_ENV=CROSS_TOP_$2
-  CROSS_SDK_ENV=CROSS_SDK_$2
+  ARCH=$2
+  CROSS_TOP_ENV=CROSS_TOP_$3
+  CROSS_SDK_ENV=CROSS_SDK_$3
   
   echo "#####BUILD FOR $PLATFORM#####"
 
@@ -59,7 +60,7 @@ function build_for ()
   rm -rdf $SSL_PREFIX_DIR
 
   echo "./Configure $GENERAL_OPTIONS $PLATFORM --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}"
-  ./Configure $GENERAL_OPTIONS $PLATFORM --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
+  ./Configure -arch $ARCH $GENERAL_OPTIONS $PLATFORM --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
   
   echo "make -j12 SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX"
   make -j12 SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX
@@ -69,12 +70,12 @@ function build_for ()
 }
 
 # Arm 32 build
-build_for ios-cross IOS
+build_for ios-cross armv7s IOS
 
 # Arm 64 build
-build_for ios64-cross IOS
+build_for ios64-cross arm64 IOS
 
 # create configuration fpor build for simulators
 patch Configurations/10-main.conf < ../patch-conf.patch
-# Amd 64 build
-build_for ios64sim-cross SIM
+# amd 64 build
+build_for ios64sim-cross x86_64 SIM
