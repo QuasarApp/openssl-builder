@@ -1,8 +1,8 @@
 #!/bin/bash
 #export ANDROID_NDK_ROOT=/some/where/android-ndk-10d
 
-OPENSSL_TAG=OpenSSL_1_1_1l
-OPENSSL_LIB_PREFIX=_1_1.so
+OPENSSL_TAG=openssl-3.0.9
+OPENSSL_LIB_PREFIX=_3.so
 
 
 
@@ -61,9 +61,9 @@ function build_for ()
   echo "./Configure $GENERAL_OPTIONS $PLATFORM --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}"
   ./Configure $GENERAL_OPTIONS $PLATFORM --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
   
-  echo "make -j12 SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX"
-  make -j12 SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX
-  make install_sw SHLIB_VERSION_NUMBER= SHLIB_EXT=$OPENSSL_LIB_PREFIX
+  echo "make -j12 
+  make -j12 
+  make install_sw 
 
   unset SSL_PREFIX_DIR
 }
