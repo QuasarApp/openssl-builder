@@ -36,7 +36,7 @@ git submodule update --init --recursive
 
 export PATH=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin:$BASE_PATH
 
-GENERAL_OPTIONS="-no-stdio -no-tests -no-ui-console -no-ssl2 -no-ssl3 -no-comp -no-hw -no-engine"
+GENERAL_OPTIONS="-no-tests -no-ui-console -no-ssl2 -no-ssl3 -no-comp -no-hw -no-engine"
 
 function build_for ()
 {
