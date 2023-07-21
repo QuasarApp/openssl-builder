@@ -47,7 +47,7 @@ git submodule foreach --recursive git checkout .
 git checkout $OPENSSL_TAG
 git submodule update --init --recursive
 
-GENERAL_OPTIONS="-fembed-bitcode -no-shared -no-tests -no-ui-console -no-ssl3 -no-comp -no-engine"
+GENERAL_OPTIONS=" -no-shared -no-tests -no-ui-console -no-ssl3 -no-comp -no-engine"
 
 function build_for ()
 {
