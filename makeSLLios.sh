@@ -67,7 +67,7 @@ function build_for ()
   echo "./Configure $GENERAL_OPTIONS $PLATFORM --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}"
   ./Configure $GENERAL_OPTIONS $PLATFORM --prefix=${SSL_PREFIX_DIR} --openssldir=${SSL_PREFIX_DIR}
   
-  echo "make -j12 
+  echo "make -j12 "
   make -j12 
   make install_sw 
 
