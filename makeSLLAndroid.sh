@@ -29,6 +29,7 @@ fi
 cd openssl
 OLD_PWD=$PWD
 
+git fetch
 git clean -xdf
 git submodule foreach --recursive git clean -xdf
 git checkout $OPENSSL_TAG

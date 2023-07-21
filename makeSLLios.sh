@@ -29,6 +29,7 @@ cd $BASE_DIR
 if [ -d "$BASE_DIR/openssl" ]; then
 
   echo "opens ssl alredy cloned"
+
 else
     git clone https://github.com/openssl/openssl.git
 fi
@@ -36,6 +37,7 @@ fi
 cd openssl
 OLD_PWD=$PWD
 
+git fetch
 git clean -xdf
 git submodule foreach --recursive git clean -xdf
 git checkout $OPENSSL_TAG
