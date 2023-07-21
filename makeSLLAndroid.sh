@@ -31,7 +31,9 @@ OLD_PWD=$PWD
 
 git fetch
 git clean -xdf
+git checkout .
 git submodule foreach --recursive git clean -xdf
+git submodule foreach --recursive git checkout .
 git checkout $OPENSSL_TAG
 git submodule update --init --recursive
 
